@@ -4,7 +4,7 @@ import { EventEmitter } from 'node:events';
 
 const CHUNK_SIZE = 16384;
 
-export class OfferTsvFileReader extends EventEmitter implements FileReader {
+export class TsvFileReader extends EventEmitter implements FileReader {
   constructor(
     private readonly filename: string
   ) {

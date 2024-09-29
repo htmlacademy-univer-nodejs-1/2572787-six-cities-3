@@ -1,9 +1,8 @@
 import got from 'got';
 import { Command } from './command.interface.js';
-import { MockServerData } from '../../shared/models/mock-server-data.model.js';
-import { OfferTsvGenerator } from '../../shared/libs/offer-tsv-generator.js';
-import { getErrorMessage } from '../../shared/helpers/common.js';
-import { TsvFileWriter } from '../../shared/libs/tsv-file-writer.js';
+import { MockServerData } from '../../shared/models/index.js';
+import { OfferTsvGenerator, TsvFileWriter } from '../../shared/libs/index.js';
+import { getErrorMessage } from '../../shared/helpers/index.js';
 
 export class GenerateCommand implements Command {
   private mockServerData: MockServerData;

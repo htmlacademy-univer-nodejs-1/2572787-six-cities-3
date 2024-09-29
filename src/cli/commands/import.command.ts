@@ -1,6 +1,5 @@
 import { Command } from './command.interface.js';
-import { OfferTsvFileReader } from '../../shared/libs/offer-tsv-file-reader.js';
-import { OfferTsvParser } from '../../shared/libs/offer-tsv-parser.js';
+import { OfferTsvParser, TsvFileReader } from '../../shared/libs/index.js';
 import { getErrorMessage } from '../../shared/helpers/common.js';
 
 export class ImportCommand implements Command {
@@ -17,7 +16,7 @@ export class ImportCommand implements Command {
 
   public async execute(...args: string[]): Promise<void> {
     const [fileName] = args;
-    const reader = new OfferTsvFileReader(fileName.trim());
+    const reader = new TsvFileReader(fileName.trim());
 
     reader.on('readline', this.onImportedLine);
     reader.on('end', this.onCompleteImport);
