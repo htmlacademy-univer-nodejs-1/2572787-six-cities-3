@@ -2,7 +2,6 @@ import got from 'got';
 import { Command } from './command.interface.js';
 import { MockServerData } from '../../shared/models/mock-server-data.model.js';
 import { OfferTsvGenerator } from '../../shared/libs/offer-tsv-generator.js';
-import { appendFile } from 'node:fs/promises';
 import { getErrorMessage } from '../../shared/helpers/common.js';
 import { TsvFileWriter } from '../../shared/libs/tsv-file-writer.js';
 
