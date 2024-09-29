@@ -29,3 +29,7 @@ export function getRandomEnumValues<T extends object>(enumObject: T): T[keyof T]
   const enumValues = Object.values(enumObject);
   return getRandomItems(enumValues);
 }
+
+export function getErrorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : '';
+}

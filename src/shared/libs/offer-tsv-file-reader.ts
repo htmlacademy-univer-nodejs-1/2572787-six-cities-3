@@ -1,31 +1,37 @@
 import { FileReader } from './file-reader.interface.js';
-import { readFileSync } from 'node:fs';
-import { Offer } from '../models/index.js';
-import { OfferTsvParser } from './offer-tsv-parser.js';
+import { createReadStream } from 'node:fs';
+import { EventEmitter } from 'node:events';
 
-export class OfferTsvFileReader implements FileReader {
-  private rawData = '';
+const CHUNK_SIZE = 16384;
 
+export class OfferTsvFileReader extends EventEmitter implements FileReader {
   constructor(
     private readonly filename: string
   ) {
-
+    super();
   }
 
-  public read(): void {
-    this.rawData = readFileSync(this.filename, { encoding: 'utf-8' });
-  }
+  public async read(): Promise<void> {
+    const stream = createReadStream(this.filename, {
+      highWaterMark: CHUNK_SIZE,
+      encoding: 'utf-8'
+    });
 
-  public toArray(): Offer[] {
-    if (!this.rawData) {
-      throw new Error('File was not read');
+    let remainingData = '';
+    let nextLinePosition = -1;
+    let importedRowCount = 0;
+
+    for await (const chunk of stream) {
+      remainingData += chunk.toString();
+
+      while ((nextLinePosition = remainingData.indexOf('\n')) >= 0) {
+        const completeRow = remainingData.slice(0, nextLinePosition);
+        remainingData = remainingData.slice(++nextLinePosition);
+        importedRowCount++;
+        this.emit('readline', completeRow);
+      }
     }
 
-    const parser = new OfferTsvParser();
-
-    return this.rawData
-      .split('\n')
-      .filter((row) => row.trim().length > 0)
-      .map((line) => parser.parse(line));
+    this.emit('end', importedRowCount);
   }
 }
