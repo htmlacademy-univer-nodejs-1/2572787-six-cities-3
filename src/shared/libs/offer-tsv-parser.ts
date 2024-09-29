@@ -1,4 +1,4 @@
-import { Offer, HousingType, ConvenienceType } from '../models/index.js';
+import { Offer, HousingType, ConvenienceType, City } from '../models/index.js';
 
 export class OfferTsvParser {
   constructor() {}
@@ -17,7 +17,7 @@ export class OfferTsvParser {
       name,
       description,
       createdAt: new Date(createdAt),
-      city,
+      city: city as City,
       previewUrl,
       imagesUrls: imageUrls.split(';'),
       isPremium: Boolean(isPremium),
