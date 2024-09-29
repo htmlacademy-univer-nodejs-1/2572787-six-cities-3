@@ -43,7 +43,7 @@ export class GenerateCommand implements Command {
 
     for (let i = 0; i < offerCount; i++) {
       const row = generator.generate();
-      writer.write(row);
+      await writer.write(row);
     }
   }
 }
