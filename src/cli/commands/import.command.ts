@@ -1,6 +1,7 @@
 import { Command } from './command.interface.js';
-import { OfferTsvParser, TsvFileReader } from '../../shared/libs/offer-generator/index.js';
+import { OfferTsvParser } from '../../shared/libs/offer-generator/index.js';
 import { getErrorMessage } from '../../shared/helpers/common.js';
+import { TsvFileReader } from '../../shared/libs/file-reader/index.js';
 
 export class ImportCommand implements Command {
   private readonly parser: OfferTsvParser = new OfferTsvParser();

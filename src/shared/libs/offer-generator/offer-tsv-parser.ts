@@ -1,4 +1,4 @@
-import { Offer, HousingType, ConvenienceType, City } from '../models/index.js';
+import { Offer, HousingType, ConvenienceType, City } from '../../models/index.js';
 
 export class OfferTsvParser {
   constructor() {}
