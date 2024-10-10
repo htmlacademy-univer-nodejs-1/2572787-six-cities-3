@@ -1,6 +1,6 @@
 import { Generator } from './generator.interface.js';
-import { City, ConvenienceType, HousingType, MockServerData } from '../models/index.js';
-import { generateRandomValue, getRandomItem, generateRandomBoolean, getRandomEnumValue, getRandomEnumValues } from '../helpers/index.js';
+import { City, ConvenienceType, HousingType, MockServerData } from '../../models/index.js';
+import { generateRandomValue, getRandomItem, generateRandomBoolean, getRandomEnumValue, getRandomEnumValues } from '../../helpers/index.js';
 import dayjs from 'dayjs';
 import { OfferTsvParser } from './offer-tsv-parser.js';
 
