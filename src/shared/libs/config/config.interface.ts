@@ -1,3 +1,3 @@
-export interface Config {
-  get(key: string): string | undefined;
+export interface Config<Schema> {
+  get<T extends keyof Schema>(key: T): Schema[T];
 }
