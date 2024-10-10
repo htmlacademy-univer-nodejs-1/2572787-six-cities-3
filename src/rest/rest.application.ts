@@ -1,6 +1,6 @@
 import { Logger } from '../shared/libs/logger/index.js';
 
-export class RestApplication {
+export class Application {
   constructor(
     private readonly logger: Logger
   ) {}
