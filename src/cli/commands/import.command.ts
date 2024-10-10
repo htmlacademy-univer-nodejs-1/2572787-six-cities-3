@@ -1,5 +1,5 @@
 import { Command } from './command.interface.js';
-import { OfferTsvParser, TsvFileReader } from '../../shared/libs/index.js';
+import { OfferTsvParser, TsvFileReader } from '../../shared/libs/offer-generator/index.js';
 import { getErrorMessage } from '../../shared/helpers/common.js';
 
 export class ImportCommand implements Command {

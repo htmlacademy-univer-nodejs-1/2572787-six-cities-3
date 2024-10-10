@@ -1,8 +1,8 @@
 import { Generator } from './generator.interface.js';
-import { City, ConvenienceType, HousingType, MockServerData } from '../models/index.js';
-import { generateRandomValue, getRandomItem, generateRandomBoolean, getRandomEnumValue, getRandomEnumValues } from '../helpers/index.js';
+import { City, ConvenienceType, HousingType, MockServerData } from '../../models/index.js';
+import { generateRandomValue, getRandomItem, generateRandomBoolean, getRandomEnumValue, getRandomEnumValues } from '../../helpers/index.js';
 import dayjs from 'dayjs';
-import { OfferTsvParser } from './offer-tsv-parser.js';
+import { OfferTsvParser } from '../offer-tsv-parser.js';
 
 const MIN_DAY_OFFSET = 0;
 const MAX_DAY_OFFSET = 14;
