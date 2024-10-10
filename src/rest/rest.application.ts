@@ -1,11 +1,13 @@
 import { Logger } from '../shared/libs/logger/index.js';
-import { Config } from '../shared/libs/config/index.js';
-import { ApplicationSchema } from '../shared/libs/config/index.js';
+import { Config, ApplicationSchema } from '../shared/libs/config/index.js';
+import { injectable, inject } from 'inversify';
+import { Component } from '../shared/models/component.enum.js';
 
+@injectable()
 export class Application {
   constructor(
-    private readonly logger: Logger,
-    private readonly config: Config<ApplicationSchema>
+    @inject(Component.Looger) private readonly logger: Logger,
+    @inject(Component.Config) private readonly config: Config<ApplicationSchema>
   ) {}
 
   public async init() {

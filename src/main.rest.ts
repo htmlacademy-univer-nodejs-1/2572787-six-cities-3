@@ -1,12 +1,17 @@
-import { PinoLogger } from './shared/libs/logger/index.js';
+import 'reflect-metadata';
+import { Container } from 'inversify';
+import { Logger, PinoLogger } from './shared/libs/logger/index.js';
 import { Application } from './rest/index.js';
-import { ApplicationConfig } from './shared/libs/config/application.config.js';
+import { Config, ApplicationConfig, ApplicationSchema } from './shared/libs/config/index.js';
+import { Component } from './shared/models/index.js';
 
 async function bootstrap() {
-  const logger = new PinoLogger();
-  const config = new ApplicationConfig(logger);
+  const container = new Container();
+  container.bind<Logger>(Component.Looger).to(PinoLogger);
+  container.bind<Config<ApplicationSchema>>(Component.Config).to(ApplicationConfig);
+  container.bind<Application>(Component.Application).to(Application);
 
-  const application = new Application(logger, config);
+  const application = container.get<Application>(Component.Application);
   await application.init();
 }
 

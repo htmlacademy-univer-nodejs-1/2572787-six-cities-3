@@ -2,12 +2,15 @@ import { config } from 'dotenv';
 import { Config } from './config.interface.js';
 import { Logger } from '../logger/index.js';
 import { ApplicationSchema, configApplicationSchema } from './application.schema.js';
+import { injectable, inject } from 'inversify';
+import { Component } from '../../models/component.enum.js';
 
+@injectable()
 export class ApplicationConfig implements Config<ApplicationSchema> {
   private readonly config: ApplicationSchema
 
   constructor(
-    private readonly logger: Logger
+    @inject(Component.Looger) private readonly logger: Logger
   ) {
     const parsedOutput = config();
 
