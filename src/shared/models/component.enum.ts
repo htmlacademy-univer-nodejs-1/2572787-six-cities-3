@@ -1,5 +1,5 @@
-export const Component = {
-  Application: Symbol.for('Application'),
-  Looger: Symbol.for('Logger'),
-  Config: Symbol.for('Config'),
-} as const;
+export enum Component {
+  Application = 'Application',
+  Looger = 'Logger',
+  Config = 'Config',
+};
