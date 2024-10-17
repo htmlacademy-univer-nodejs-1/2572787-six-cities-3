@@ -5,7 +5,7 @@ import { City } from './cities.enum.js';
 export type Offer = {
   name: string;
   description: string;
-  createdAt: Date;
+  internalCreatedAt: Date;
   city: City;
   previewUrl: string;
   imagesUrls: string[];

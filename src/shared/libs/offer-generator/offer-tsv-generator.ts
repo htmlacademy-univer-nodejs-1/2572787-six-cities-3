@@ -32,7 +32,7 @@ export class OfferTsvGenerator implements Generator {
     const offer = {
       name: getRandomItem(this.mockData.names),
       description: getRandomItem(this.mockData.descriptions),
-      createdAt: dayjs()
+      internalCreatedAt: dayjs()
         .subtract(generateRandomValue(MIN_DAY_OFFSET, MAX_DAY_OFFSET))
         .toDate(),
       city: getRandomEnumValue(City),

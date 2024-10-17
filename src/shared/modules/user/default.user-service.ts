@@ -5,6 +5,7 @@ import { UserEntity } from './user.entity.js';
 import { inject, injectable } from 'inversify';
 import { Component } from '../../models/component.enum.js';
 import { Logger } from '../../libs/logger/index.js';
+import { Types } from 'mongoose';
 
 @injectable()
 export class DefaultUserService implements UserService {
@@ -21,6 +22,10 @@ export class DefaultUserService implements UserService {
     this.logger.info(`New user created: ${user.email}`);
 
     return result;
+  }
+
+  public async findById(id: Types.ObjectId): Promise<DocumentType<UserEntity> | null> {
+    return this.userModel.findById(id);
   }
 
   public async findByEmail(email: string): Promise<DocumentType<UserEntity> | null> {

@@ -16,7 +16,7 @@ export class OfferTsvParser {
     return {
       name,
       description,
-      createdAt: new Date(createdAt),
+      internalCreatedAt: new Date(createdAt),
       city: city as City,
       previewUrl,
       imagesUrls: imageUrls.split(';'),
@@ -39,7 +39,7 @@ export class OfferTsvParser {
 
   toString(offer: Offer): string {
     return [
-      offer.name, offer.description, offer.createdAt, offer.city,
+      offer.name, offer.description, offer.internalCreatedAt, offer.city,
       offer.previewUrl, offer.imagesUrls.join(';'), offer.isPremium, offer.isFavourite,
       offer.rating, offer.housingType, offer.roomsNumber, offer.guestsNumber,
       offer.cost, offer.conveniences.join(';'), offer.authorUrl, offer.latitude, offer.longitude
