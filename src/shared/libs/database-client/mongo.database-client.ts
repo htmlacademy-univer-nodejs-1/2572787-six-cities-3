@@ -14,7 +14,7 @@ export class MongoDatabaseClient implements DatabaseClient {
   private isConnected: boolean;
 
   constructor(
-    @inject(Component.Looger) private readonly logger: Logger
+    @inject(Component.Logger) private readonly logger: Logger
   ) {
     this.isConnected = false;
   }

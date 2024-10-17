@@ -1,6 +1,8 @@
 export enum Component {
   Application = 'Application',
-  Looger = 'Logger',
+  Logger = 'Logger',
   Config = 'Config',
-  DatabaseClient = 'DatabaseClient'
+  DatabaseClient = 'DatabaseClient',
+  UserService = 'UserService',
+  UserModel = 'UserModel',
 };
