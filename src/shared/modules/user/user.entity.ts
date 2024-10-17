@@ -1,8 +1,9 @@
-import { User, UserType } from "../../models/index.js";
+import { User, UserType } from '../../models/index.js';
 import { getModelForClass, prop, defaultClasses, modelOptions } from '@typegoose/typegoose';
-import { createSHA256 } from "../../helpers/index.js";
+import { createSHA256 } from '../../helpers/index.js';
 
-export interface UserEntity extends defaultClasses.Base {};
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
+export interface UserEntity extends defaultClasses.Base {}
 
 @modelOptions({
   schemaOptions: {
@@ -10,21 +11,22 @@ export interface UserEntity extends defaultClasses.Base {};
     timestamps: true
   }
 })
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class UserEntity extends defaultClasses.TimeStamps implements User {
   @prop({ required: true })
-  public name = '';
+  public name: string = '';
 
   @prop({ required: true, unique: true })
-  public email = '';
+  public email: string = '';
 
   @prop({ required: true })
-  public password? = '';
+  public password?: string = '';
 
   @prop({ required: true })
-  public type = UserType.Basic;
+  public type: UserType = UserType.Basic;
 
   @prop({ required: false, default: null })
-  public avatarUrl? = '';
+  public avatarUrl?: string = '';
 
   constructor(userData: User) {
     super();
