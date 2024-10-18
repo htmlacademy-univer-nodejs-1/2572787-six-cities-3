@@ -30,12 +30,12 @@ export class OfferTsvParser {
       conveniences: conveniences
         .split(';')
         .map((convenience) => convenience as ConvenienceType),
-        author: {
-          email: authorEmail,
-          name: author,
-          type: UserType.Basic,
-          avatarUrl: `http://localhost:1111/${author}`
-        },
+      author: {
+        email: authorEmail,
+        name: author,
+        type: UserType.Basic,
+        avatarUrl: `http://localhost:1111/${author}`
+      },
       latitude: Number(latitude),
       longitude: Number(longitude),
       commentsNumber: 0

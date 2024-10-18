@@ -31,10 +31,10 @@ export class ImportCommand implements Command {
     return '--import';
   }
 
-  public async execute(filename: string, database_connection_uri: string, salt: string): Promise<void> {
+  public async execute(filename: string, databaseConnectionUri: string, salt: string): Promise<void> {
     this.salt = salt;
 
-    await this.databaseClient.connect(database_connection_uri);
+    await this.databaseClient.connect(databaseConnectionUri);
     const reader = new TsvFileReader(filename.trim());
 
     reader.on('line', this.onImportedLine);
