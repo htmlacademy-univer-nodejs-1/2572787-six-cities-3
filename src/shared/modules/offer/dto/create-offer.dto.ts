@@ -1,4 +1,6 @@
+import { Ref } from '@typegoose/typegoose';
 import { HousingType, ConvenienceType, City } from '../../../models/index.js';
+import { UserEntity } from '../../user/user.entity.js';
 
 export class CreateOfferDto {
   public name: string;
@@ -15,7 +17,7 @@ export class CreateOfferDto {
   public guestsNumber: number;
   public cost: number;
   public conveniences: ConvenienceType[];
-  public authorUrl: string;
+  public authorId: Ref<UserEntity>;
   public latitude: number;
   public longitude: number;
   public commentsNumber: number;

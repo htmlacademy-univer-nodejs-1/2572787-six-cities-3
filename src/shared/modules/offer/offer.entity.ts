@@ -1,5 +1,6 @@
-import { City, ConvenienceType, HousingType, Offer } from '../../models/index.js';
-import { getModelForClass, prop, defaultClasses, modelOptions } from '@typegoose/typegoose';
+import { City, ConvenienceType, HousingType, } from '../../models/index.js';
+import { getModelForClass, prop, defaultClasses, modelOptions, Ref } from '@typegoose/typegoose';
+import { UserEntity } from '../user/user.entity.js';
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export interface OfferEntity extends defaultClasses.Base {}
@@ -11,7 +12,7 @@ export interface OfferEntity extends defaultClasses.Base {}
   }
 })
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
-export class OfferEntity extends defaultClasses.TimeStamps implements Offer {
+export class OfferEntity extends defaultClasses.TimeStamps {
   @prop({ required: true })
   name: string;
 
@@ -54,8 +55,8 @@ export class OfferEntity extends defaultClasses.TimeStamps implements Offer {
   @prop({ required: true })
   conveniences: ConvenienceType[];
 
-  @prop({ required: true })
-  authorUrl: string;
+  @prop({ required: true, ref: UserEntity })
+  authorId: Ref<UserEntity>;
 
   @prop({ required: true })
   latitude: number;
@@ -65,29 +66,6 @@ export class OfferEntity extends defaultClasses.TimeStamps implements Offer {
 
   @prop({ required: true })
   commentsNumber: number;
-
-  constructor(offer: Offer) {
-    super();
-
-    this.name = offer.name;
-    this.description = offer.description;
-    this.internalCreatedAt = offer.internalCreatedAt;
-    this.city = offer.city;
-    this.previewUrl = offer.previewUrl;
-    this.imagesUrls = offer.imagesUrls;
-    this.isPremium = offer.isPremium;
-    this.isFavourite = offer.isFavourite;
-    this.rating = offer.rating;
-    this.housingType = offer.housingType;
-    this.roomsNumber = offer.roomsNumber;
-    this.guestsNumber = offer.guestsNumber;
-    this.cost = offer.cost;
-    this.conveniences = offer.conveniences;
-    this.authorUrl = offer.authorUrl;
-    this.latitude = offer.latitude;
-    this.longitude = offer.longitude;
-    this.commentsNumber = offer.commentsNumber;
-  }
 }
 
 export const OfferModel = getModelForClass(OfferEntity);

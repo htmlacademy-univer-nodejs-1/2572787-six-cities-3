@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import 'reflect-metadata';
 import { CliApplication, HelpCommand, VersionCommand, ImportCommand, GenerateCommand } from './cli/index.js';
 
 function bootstrap() {

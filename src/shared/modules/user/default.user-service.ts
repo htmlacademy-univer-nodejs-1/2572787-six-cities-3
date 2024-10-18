@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { DocumentType, types } from '@typegoose/typegoose';
 import { CreateUserDto } from './dto/create-user.dto.js';
 import { UserService } from './user-service.interface.js';

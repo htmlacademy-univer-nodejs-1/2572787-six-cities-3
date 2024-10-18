@@ -1,5 +1,5 @@
 import { Generator } from './generator.interface.js';
-import { City, ConvenienceType, HousingType, MockServerData } from '../../models/index.js';
+import { City, ConvenienceType, HousingType, MockServerData, UserType } from '../../models/index.js';
 import { generateRandomValue, getRandomItem, generateRandomBoolean, getRandomEnumValue, getRandomEnumValues } from '../../helpers/index.js';
 import dayjs from 'dayjs';
 import { OfferTsvParser } from './offer-tsv-parser.js';
@@ -21,6 +21,15 @@ const MAX_GUESTS = 10;
 
 const MIN_COST = 1_000;
 const MAX_COST = 500_000;
+
+const MIN_EMAIL_ID = 0;
+const MAX_EMAIL_ID = 500_000;
+
+const MIN_LATITUDE = 0;
+const MAX_LATITUDE = 90;
+
+const MIN_LONGITUDE = 0;
+const MAX_LONGITUDE = 180;
 
 export class OfferTsvGenerator implements Generator {
   constructor(private readonly mockData: MockServerData) {}
@@ -53,9 +62,14 @@ export class OfferTsvGenerator implements Generator {
       guestsNumber: generateRandomValue(MIN_GUESTS, MAX_GUESTS),
       cost: generateRandomValue(MIN_COST, MAX_COST, 2),
       conveniences: getRandomEnumValues(ConvenienceType),
-      authorUrl: `https://six-cities/users/${author}`,
-      latitude: generateRandomValue(0, 90, 6),
-      longitude: generateRandomValue(0, 180, 6),
+      author: {
+        email: `${author}${generateRandomValue(MIN_EMAIL_ID, MAX_EMAIL_ID)}@aboba.ru`,
+        name: author,
+        type: UserType.Basic,
+        avatarUrl: `http://localhost:1111/${author}`
+      },
+      latitude: generateRandomValue(MIN_LATITUDE, MAX_LATITUDE, 6),
+      longitude: generateRandomValue(MIN_LONGITUDE, MAX_LONGITUDE, 6),
       commentsNumber: 0
     };
     const parser = new OfferTsvParser();
