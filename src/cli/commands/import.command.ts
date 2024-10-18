@@ -37,7 +37,7 @@ export class ImportCommand implements Command {
     await this.databaseClient.connect(database_connection_uri);
     const reader = new TsvFileReader(filename.trim());
 
-    reader.on('readline', this.onImportedLine);
+    reader.on('line', this.onImportedLine);
     reader.on('end', this.onCompleteImport);
 
     try {
