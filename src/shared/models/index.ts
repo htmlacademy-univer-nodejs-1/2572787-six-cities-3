@@ -6,3 +6,4 @@ export * from './offer.model.js';
 export * from './comment.model.js';
 export * from './mock-server-data.model.js';
 export * from './cities.enum.js';
+export * from './component.enum.js';
