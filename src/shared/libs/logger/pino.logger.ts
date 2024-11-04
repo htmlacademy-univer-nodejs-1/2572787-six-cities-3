@@ -1,7 +1,8 @@
+import 'reflect-metadata';
 import { Logger as PinoInstance, pino } from 'pino';
 import { Logger } from './logger.interface.js';
 import { getCurrentDirectoryPath } from '../../helpers/file-system.js';
-import { resolve } from 'path';
+import { resolve } from 'node:path';
 import { injectable } from 'inversify';
 
 @injectable()

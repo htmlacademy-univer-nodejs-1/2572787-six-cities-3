@@ -1,4 +1,4 @@
-import { Offer, HousingType, ConvenienceType, City } from '../../models/index.js';
+import { Offer, HousingType, ConvenienceType, City, UserType } from '../../models/index.js';
 
 export class OfferTsvParser {
   constructor() {}
@@ -11,12 +11,12 @@ export class OfferTsvParser {
     }
 
     const splitString = trimString.split('\t');
-    const [name, description, createdAt, city, previewUrl, imageUrls, isPremium, isFavourite, rating, housingType, roomsNumber, guestsNumber, cost, conveniences, authorUrl, latitude, longitude] = splitString;
+    const [name, description, createdAt, city, previewUrl, imageUrls, isPremium, isFavourite, rating, housingType, roomsNumber, guestsNumber, cost, conveniences, author, authorEmail, latitude, longitude] = splitString;
 
     return {
       name,
       description,
-      createdAt: new Date(createdAt),
+      internalCreatedAt: new Date(createdAt),
       city: city as City,
       previewUrl,
       imagesUrls: imageUrls.split(';'),
@@ -30,7 +30,12 @@ export class OfferTsvParser {
       conveniences: conveniences
         .split(';')
         .map((convenience) => convenience as ConvenienceType),
-      authorUrl,
+      author: {
+        email: authorEmail,
+        name: author,
+        type: UserType.Basic,
+        avatarUrl: `http://localhost:1111/${author}`
+      },
       latitude: Number(latitude),
       longitude: Number(longitude),
       commentsNumber: 0
@@ -39,10 +44,11 @@ export class OfferTsvParser {
 
   toString(offer: Offer): string {
     return [
-      offer.name, offer.description, offer.createdAt, offer.city,
+      offer.name, offer.description, offer.internalCreatedAt, offer.city,
       offer.previewUrl, offer.imagesUrls.join(';'), offer.isPremium, offer.isFavourite,
       offer.rating, offer.housingType, offer.roomsNumber, offer.guestsNumber,
-      offer.cost, offer.conveniences.join(';'), offer.authorUrl, offer.latitude, offer.longitude
+      offer.cost, offer.conveniences.join(';'), offer.author.name, offer.author.email,
+      offer.latitude, offer.longitude
     ].join('\t');
   }
 }

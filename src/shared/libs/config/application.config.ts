@@ -7,10 +7,10 @@ import { Component } from '../../models/component.enum.js';
 
 @injectable()
 export class ApplicationConfig implements Config<ApplicationSchema> {
-  private readonly config: ApplicationSchema
+  private readonly config: ApplicationSchema;
 
   constructor(
-    @inject(Component.Looger) private readonly logger: Logger
+    @inject(Component.Logger) private readonly logger: Logger
   ) {
     const parsedOutput = config();
 

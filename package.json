@@ -19,6 +19,7 @@
     "mock:server": "json-server ./mocks/mock-server-data.json --port 3123"
   },
   "devDependencies": {
+    "@typegoose/typegoose": "^12.8.0",
     "@types/convict": "^6.1.6",
     "@types/convict-format-with-validator": "^6.0.5",
     "@types/node": "18.17.17",
@@ -45,6 +46,7 @@
     "got": "^14.4.2",
     "inversify": "^6.0.2",
     "json-server": "^0.17.4",
+    "mongoose": "^8.7.1",
     "pino": "^9.4.0",
     "reflect-metadata": "^0.2.2",
     "tslib": "^2.7.0"

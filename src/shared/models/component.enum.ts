@@ -1,5 +1,10 @@
 export enum Component {
   Application = 'Application',
-  Looger = 'Logger',
+  Logger = 'Logger',
   Config = 'Config',
-};
+  DatabaseClient = 'DatabaseClient',
+  UserService = 'UserService',
+  UserModel = 'UserModel',
+  OfferService = 'OfferService',
+  OfferModel = 'OfferModel'
+}
