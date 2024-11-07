@@ -1,9 +1,10 @@
 import { User, UserType } from '../../models/index.js';
 import { getModelForClass, prop, defaultClasses, modelOptions } from '@typegoose/typegoose';
 import { createSHA256 } from '../../helpers/index.js';
+import { UUID } from 'node:crypto';
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
-export interface UserEntity extends defaultClasses.Base {}
+export interface UserEntity extends defaultClasses.Base<UUID> {}
 
 @modelOptions({
   schemaOptions: {
@@ -27,6 +28,9 @@ export class UserEntity extends defaultClasses.TimeStamps {
 
   @prop({ required: false, default: null })
   public avatarUrl?: string = '';
+
+  @prop({required: true})
+  public favouriteOffers: UUID[]
 
   constructor(userData: User) {
     super();

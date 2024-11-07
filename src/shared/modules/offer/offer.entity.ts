@@ -1,9 +1,10 @@
 import { City, ConvenienceType, HousingType, } from '../../models/index.js';
 import { getModelForClass, prop, defaultClasses, modelOptions, Ref } from '@typegoose/typegoose';
 import { UserEntity } from '../user/user.entity.js';
+import { UUID } from 'crypto';
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
-export interface OfferEntity extends defaultClasses.Base {}
+export interface OfferEntity extends defaultClasses.Base<UUID> {}
 
 @modelOptions({
   schemaOptions: {
@@ -14,58 +15,58 @@ export interface OfferEntity extends defaultClasses.Base {}
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class OfferEntity extends defaultClasses.TimeStamps {
   @prop({ required: true })
-  name: string;
+  public name: string;
 
   @prop()
-  description: string;
+  public description: string;
 
   @prop({ required: true })
-  internalCreatedAt: Date;
+  public city: City;
 
   @prop({ required: true })
-  city: City;
-
-  @prop({ required: true })
-  previewUrl: string;
+  public previewUrl: string;
 
   @prop({ required: false })
-  imagesUrls: string[];
+  public imagesUrls: string[];
 
   @prop({ required: true })
-  isPremium: boolean;
+  public isPremium: boolean;
 
   @prop({ required: true })
-  isFavourite: boolean;
+  public isFavourite: boolean;
 
   @prop({ required: true })
-  rating: number;
+  public rating: number;
 
   @prop({ required: true })
-  housingType: HousingType;
+  public housingType: HousingType;
 
   @prop({ required: true })
-  roomsNumber: number;
+  public roomsNumber: number;
 
   @prop({ required: true })
-  guestsNumber: number;
+  public guestsNumber: number;
 
   @prop({ required: true })
-  cost: number;
+  public cost: number;
 
   @prop({ required: true })
-  conveniences: ConvenienceType[];
+  public conveniences: ConvenienceType[];
 
   @prop({ required: true, ref: UserEntity })
-  authorId: Ref<UserEntity>;
+  public authorId: UUID;
 
   @prop({ required: true })
-  latitude: number;
+  public latitude: number;
 
   @prop({ required: true })
-  longitude: number;
+  public longitude: number;
 
   @prop({ required: true })
-  commentsNumber: number;
+  public commentsNumber: number;
+
+  @prop({ required: true })
+  public favouriteUsers: UUID[] = [];
 }
 
 export const OfferModel = getModelForClass(OfferEntity);
