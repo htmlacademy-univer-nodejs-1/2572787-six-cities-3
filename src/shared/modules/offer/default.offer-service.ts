@@ -46,14 +46,14 @@ export class DefaultOfferService implements OfferService {
   }
 
   public async findAllFavourite(userId: UUID, limit: number, skip: number): Promise<DocumentType<OfferEntity>[]> {
-    return this.offerModel.find({favouriteUsers: {"$in": [userId]}}).skip(skip).limit(limit);
+    return this.offerModel.find({favouriteUsers: {'$in': [userId]}}).skip(skip).limit(limit);
   }
 
   public async addToFavourite(orderId: UUID, userId: UUID): Promise<void> {
-    await this.offerModel.findByIdAndUpdate(orderId, {"$push": {favouriteUsers: userId}});
+    await this.offerModel.findByIdAndUpdate(orderId, {'$push': {favouriteUsers: userId}});
   }
 
   public async removeFromFavourite(orderId: UUID, userId: UUID): Promise<void> {
-    await this.offerModel.findByIdAndUpdate(orderId, {"$pop": {favouriteUsers: userId}});
+    await this.offerModel.findByIdAndUpdate(orderId, {'$pop': {favouriteUsers: userId}});
   }
 }

@@ -29,9 +29,6 @@ export class UserEntity extends defaultClasses.TimeStamps {
   @prop({ required: false, default: null })
   public avatarUrl?: string = '';
 
-  @prop({required: true})
-  public favouriteOffers: UUID[]
-
   constructor(userData: User) {
     super();
 

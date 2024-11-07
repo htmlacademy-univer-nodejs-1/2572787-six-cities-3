@@ -20,8 +20,8 @@ export class DefaultCommentService implements CommentService {
   public async create(dto: CreateCommentDto): Promise<DocumentType<CommentEntity>> {
     const result = await this.commentModel.create(dto);
 
-    const aggregation = await this.commentModel.aggregate([{"$match": {offerId: dto.offerId}}, {"$group": {_id: null, count: {'$sum': 1}, average: {"$avg": '$rating'}}}]).exec();
-    this.offerModel.findByIdAndUpdate(dto.offerId, {commentsNumber: aggregation[0].count, rating: aggregation[0].average})
+    const aggregation = await this.commentModel.aggregate([{'$match': {offerId: dto.offerId}}, {'$group': {_id: null, count: {'$sum': 1}, average: {'$avg': '$rating'}}}]).exec();
+    this.offerModel.findByIdAndUpdate(dto.offerId, {commentsNumber: aggregation[0].count, rating: aggregation[0].average});
 
     this.logger.info(`New comment created: ${result._id}`);
 

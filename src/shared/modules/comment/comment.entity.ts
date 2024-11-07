@@ -1,6 +1,5 @@
 import { UUID } from 'node:crypto';
-import { Comment, User } from '../../models/index.js';
-import { Ref, getModelForClass, prop, defaultClasses, modelOptions } from '@typegoose/typegoose';
+import { getModelForClass, prop, defaultClasses, modelOptions } from '@typegoose/typegoose';
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export interface CommentEntity extends defaultClasses.Base<UUID> {}

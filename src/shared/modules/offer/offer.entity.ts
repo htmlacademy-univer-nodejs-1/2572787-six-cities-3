@@ -1,7 +1,7 @@
 import { City, ConvenienceType, HousingType, } from '../../models/index.js';
-import { getModelForClass, prop, defaultClasses, modelOptions, Ref } from '@typegoose/typegoose';
+import { getModelForClass, prop, defaultClasses, modelOptions } from '@typegoose/typegoose';
 import { UserEntity } from '../user/user.entity.js';
-import { UUID } from 'crypto';
+import { UUID } from 'node:crypto';
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export interface OfferEntity extends defaultClasses.Base<UUID> {}
