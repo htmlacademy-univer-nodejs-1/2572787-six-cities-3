@@ -4,14 +4,19 @@ import { injectable, inject } from 'inversify';
 import { Component } from '../shared/models/component.enum.js';
 import { DatabaseClient } from '../shared/libs/database-client/index.js';
 import { getMongoUri } from '../shared/helpers/index.js';
-import express from 'express'
+import express from 'express';
+import { Controller } from '../shared/libs/rest/controller.interface.js';
+import { ExceptionFilter } from '../shared/libs/exception-filter/exception-filter.interface.js';
 
 @injectable()
 export class Application {
   constructor(
     @inject(Component.Logger) private readonly logger: Logger,
     @inject(Component.Config) private readonly config: Config<ApplicationSchema>,
-    @inject(Component.DatabaseClient) private readonly databaseClient: DatabaseClient
+    @inject(Component.DatabaseClient) private readonly databaseClient: DatabaseClient,
+    @inject(Component.UserController) private readonly userController: Controller,
+    @inject(Component.OfferController) private readonly offerController: Controller,
+    @inject(Component.ExceptionFilter) private readonly exceptionFilter: ExceptionFilter
   ) {}
 
   public async init() {
@@ -25,7 +30,12 @@ export class Application {
     const app = express();
 
     this.configureMiddlewares(app);
-    
+
+    app.use('/users', this.userController.router);
+    app.use('/offers', this.offerController.router);
+
+    app.use(this.exceptionFilter.handle.bind(this.exceptionFilter));
+
     app.listen(this.config.get('PORT'),
       () => this.logger.info(`Server running on port: ${this.config.get('PORT')}`)
     );
@@ -45,5 +55,9 @@ export class Application {
 
   private async configureMiddlewares(app: express.Application) {
     app.use(express.json());
+    app.use((req, _res, next) => {
+      this.logger.info(`Catch request: ${req.method} ${req.url}`);
+      next();
+    });
   }
 }

@@ -1,8 +1,8 @@
 import { HttpMethod } from './http-method.enum.js';
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
 export interface Route {
   path: string;
   httpMethod: HttpMethod;
-  handle(req: Request, res: Response): Promise<void>;
+  handleAsync(req: Request, res: Response, next: NextFunction): Promise<void>;
 }

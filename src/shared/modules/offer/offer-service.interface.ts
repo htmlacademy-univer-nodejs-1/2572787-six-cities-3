@@ -1,17 +1,18 @@
 import { DocumentType } from '@typegoose/typegoose';
 import { OfferEntity } from './offer.entity.js';
 import { CreateOfferDto } from './dto/create-offer.dto.js';
-import { UUID } from 'node:crypto';
 import { PutOfferDto } from './dto/put-offer.dto.js';
+import { City } from '../../models/index.js';
+import { Types } from 'mongoose';
 
 export interface OfferService {
   create(dto: CreateOfferDto): Promise<DocumentType<OfferEntity>>;
   change(dto: PutOfferDto): Promise<DocumentType<OfferEntity> | null>;
-  deleteById(id: UUID): Promise<void>;
-  findById(id: UUID): Promise<DocumentType<OfferEntity> | null>;
+  deleteById(id: Types.ObjectId): Promise<void>;
+  findById(id: Types.ObjectId): Promise<DocumentType<OfferEntity> | null>;
   findAll(limit: number, skip: number): Promise<DocumentType<OfferEntity>[]>;
-  findAllPremium(limit: number, skip: number): Promise<DocumentType<OfferEntity>[]>;
-  findAllFavourite(userId: UUID, limit: number, skip: number): Promise<DocumentType<OfferEntity>[]>;
-  addToFavourite(orderId: UUID, userId: UUID): Promise<void>;
-  removeFromFavourite(orderId: UUID, userId: UUID): Promise<void>;
+  findAllPremium(city: City, limit: number, skip: number): Promise<DocumentType<OfferEntity>[]>;
+  findAllFavourite(userId: Types.ObjectId, limit: number, skip: number): Promise<DocumentType<OfferEntity>[]>;
+  addToFavourite(orderId: Types.ObjectId, userId: Types.ObjectId): Promise<void>;
+  removeFromFavourite(orderId: Types.ObjectId, userId: Types.ObjectId): Promise<void>;
 }

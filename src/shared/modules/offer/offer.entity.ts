@@ -1,10 +1,9 @@
 import { City, ConvenienceType, HousingType, } from '../../models/index.js';
-import { getModelForClass, prop, defaultClasses, modelOptions } from '@typegoose/typegoose';
+import { getModelForClass, prop, defaultClasses, modelOptions, Ref } from '@typegoose/typegoose';
 import { UserEntity } from '../user/user.entity.js';
-import { UUID } from 'node:crypto';
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
-export interface OfferEntity extends defaultClasses.Base<UUID> {}
+export interface OfferEntity extends defaultClasses.Base {}
 
 @modelOptions({
   schemaOptions: {
@@ -32,10 +31,7 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   @prop({ required: true })
   public isPremium: boolean;
 
-  @prop({ required: true })
-  public isFavourite: boolean;
-
-  @prop({ required: true })
+  @prop({ required: true, default: 0 })
   public rating: number;
 
   @prop({ required: true })
@@ -53,8 +49,8 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   @prop({ required: true })
   public conveniences: ConvenienceType[];
 
-  @prop({ required: true, ref: UserEntity })
-  public authorId: UUID;
+  @prop({ required: true })
+  public authorId: Ref<UserEntity>;
 
   @prop({ required: true })
   public latitude: number;
@@ -62,11 +58,11 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   @prop({ required: true })
   public longitude: number;
 
-  @prop({ required: true })
+  @prop({ required: true, default: 0 })
   public commentsNumber: number;
 
   @prop({ required: true })
-  public favouriteUsers: UUID[] = [];
+  public favouriteUsers: Ref<UserEntity>[] = [];
 }
 
 export const OfferModel = getModelForClass(OfferEntity);
