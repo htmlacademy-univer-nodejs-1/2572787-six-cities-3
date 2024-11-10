@@ -23,6 +23,9 @@ export class Application {
     this.logger.info('Init database completed');
 
     const app = express();
+
+    this.configureMiddlewares(app);
+    
     app.listen(this.config.get('PORT'),
       () => this.logger.info(`Server running on port: ${this.config.get('PORT')}`)
     );
@@ -38,5 +41,9 @@ export class Application {
     );
 
     return this.databaseClient.connect(mongoUri);
+  }
+
+  private async configureMiddlewares(app: express.Application) {
+    app.use(express.json());
   }
 }
