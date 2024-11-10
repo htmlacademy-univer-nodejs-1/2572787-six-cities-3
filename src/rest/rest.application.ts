@@ -4,6 +4,7 @@ import { injectable, inject } from 'inversify';
 import { Component } from '../shared/models/component.enum.js';
 import { DatabaseClient } from '../shared/libs/database-client/index.js';
 import { getMongoUri } from '../shared/helpers/index.js';
+import express from 'express'
 
 @injectable()
 export class Application {
@@ -20,6 +21,11 @@ export class Application {
     this.logger.info('Init database');
     await this.initDb();
     this.logger.info('Init database completed');
+
+    const app = express();
+    app.listen(this.config.get('PORT'),
+      () => this.logger.info(`Server running on port: ${this.config.get('PORT')}`)
+    );
   }
 
   private async initDb() {
