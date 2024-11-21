@@ -5,8 +5,11 @@ export enum Component {
   DatabaseClient = 'DatabaseClient',
   UserService = 'UserService',
   UserModel = 'UserModel',
+  UserController = 'UserController',
   OfferService = 'OfferService',
   OfferModel = 'OfferModel',
+  OfferController = 'OfferController',
   CommentService = 'CommentService',
-  CommentModel = 'CommentModel'
+  CommentModel = 'CommentModel',
+  ExceptionFilter = 'ExceptionFilter'
 }

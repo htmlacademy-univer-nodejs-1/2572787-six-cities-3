@@ -6,7 +6,7 @@ import { UserEntity } from './user.entity.js';
 import { inject, injectable } from 'inversify';
 import { Component } from '../../models/component.enum.js';
 import { Logger } from '../../libs/logger/index.js';
-import { UUID } from 'node:crypto';
+import { ObjectId } from 'mongoose';
 
 @injectable()
 export class DefaultUserService implements UserService {
@@ -25,7 +25,7 @@ export class DefaultUserService implements UserService {
     return result;
   }
 
-  public async findById(id: UUID): Promise<DocumentType<UserEntity> | null> {
+  public async findById(id: ObjectId): Promise<DocumentType<UserEntity> | null> {
     return this.userModel.findById(id);
   }
 

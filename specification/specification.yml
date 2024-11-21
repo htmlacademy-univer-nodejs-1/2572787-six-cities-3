@@ -3,7 +3,7 @@ info:
   title: 'Six Cities'
   version: '1.0'
 servers:
-  - url: http://localhost:3000/v1
+  - url: http://localhost:5000
 paths:
   /offers:
     post:
@@ -110,14 +110,14 @@ paths:
           description: Bad Request
       tags:
         - Offers
-  /offers/premium/{cityId}:
+  /offers/premium/{city}:
     get:
       parameters:
-        - name: cityId
+        - name: city
           in: path
           required: true
           schema:
-            type: integer
+            type: string
       responses:
         '200':
           description: OK

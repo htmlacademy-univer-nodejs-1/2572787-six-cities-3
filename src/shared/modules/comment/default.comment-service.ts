@@ -6,8 +6,8 @@ import { CommentEntity } from './comment.entity.js';
 import { inject, injectable } from 'inversify';
 import { Component } from '../../models/component.enum.js';
 import { Logger } from '../../libs/logger/index.js';
-import { UUID } from 'node:crypto';
 import { OfferEntity } from '../offer/offer.entity.js';
+import { Types } from 'mongoose';
 
 @injectable()
 export class DefaultCommentService implements CommentService {
@@ -28,7 +28,7 @@ export class DefaultCommentService implements CommentService {
     return result;
   }
 
-  public async findAllForOffer(offerId: UUID, limit: number, skip: number): Promise<DocumentType<CommentEntity>[]> {
+  public async findAllForOffer(offerId: Types.ObjectId, limit: number, skip: number): Promise<DocumentType<CommentEntity>[]> {
     return await this.commentModel.find({offerId: offerId}).skip(skip).limit(limit);
   }
 }
