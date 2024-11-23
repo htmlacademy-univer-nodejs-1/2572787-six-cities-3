@@ -8,9 +8,7 @@ export class PutOfferDto {
   public city: City;
   public previewUrl: string;
   public imagesUrls: string[];
-  public rating: number;
   public isPremium: boolean;
-  public isFavourite: boolean;
   public housingType: HousingType;
   public roomsNumber: number;
   public guestsNumber: number;

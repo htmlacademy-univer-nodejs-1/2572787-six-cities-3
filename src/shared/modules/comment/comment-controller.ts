@@ -11,6 +11,8 @@ import { StatusCodes } from 'http-status-codes';
 import { CommentService } from './comment-service.interface.js';
 import { CreateCommentDto } from './index.js';
 import { ObjectIdValidatorMiddleware } from '../../libs/rest/object-id-validator.middleware.js';
+import { SchemaValidatorMiddleware } from '../../libs/rest/schema-validator.middleware.js';
+import { createCommentDtoSchema } from './dto-schemas/create-comment-dto.schema.js';
 
 @injectable()
 export class CommentController extends ControllerBase {
@@ -21,7 +23,7 @@ export class CommentController extends ControllerBase {
     super(logger);
 
     this.addRoute({path: '/:id/comments', httpMethod: HttpMethod.Get, handleAsync: this.index.bind(this), middlewares: [new ObjectIdValidatorMiddleware('id')]});
-    this.addRoute({path: '/:id/comments', httpMethod: HttpMethod.Post, handleAsync: this.create.bind(this), middlewares: [new ObjectIdValidatorMiddleware('id')]});
+    this.addRoute({path: '/:id/comments', httpMethod: HttpMethod.Post, handleAsync: this.create.bind(this), middlewares: [new ObjectIdValidatorMiddleware('id'), new SchemaValidatorMiddleware(createCommentDtoSchema)]});
   }
 
   private async create(req: Request, res: Response): Promise<void> {

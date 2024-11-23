@@ -12,6 +12,9 @@ import { isValidObjectId, Types } from 'mongoose';
 import { HttpError } from '../../libs/exception-filter/http-error.js';
 import { StatusCodes } from 'http-status-codes';
 import { ObjectIdValidatorMiddleware } from '../../libs/rest/object-id-validator.middleware.js';
+import { SchemaValidatorMiddleware } from '../../libs/rest/schema-validator.middleware.js';
+import { createOfferDtoSchema } from './dto-schemas/create-offer-dto.schema.js';
+import { putOfferDtoSchema } from './dto-schemas/put-offer-dto.schema.js';
 
 @injectable()
 export class OfferController extends ControllerBase {
@@ -27,9 +30,9 @@ export class OfferController extends ControllerBase {
     this.addRoute({path: '/favourite/:id', httpMethod: HttpMethod.Delete, handleAsync: this.removeFromFavourite.bind(this), middlewares: [new ObjectIdValidatorMiddleware('id')]});
 
     this.addRoute({path: '/', httpMethod: HttpMethod.Get, handleAsync: this.index.bind(this)});
-    this.addRoute({path: '/', httpMethod: HttpMethod.Post, handleAsync: this.create.bind(this)});
+    this.addRoute({path: '/', httpMethod: HttpMethod.Post, handleAsync: this.create.bind(this), middlewares: [new SchemaValidatorMiddleware(createOfferDtoSchema)]});
     this.addRoute({path: '/:id', httpMethod: HttpMethod.Get, handleAsync: this.showById.bind(this), middlewares: [new ObjectIdValidatorMiddleware('id')]});
-    this.addRoute({path: '/:id', httpMethod: HttpMethod.Put, handleAsync: this.updateById.bind(this), middlewares: [new ObjectIdValidatorMiddleware('id')]});
+    this.addRoute({path: '/:id', httpMethod: HttpMethod.Put, handleAsync: this.updateById.bind(this), middlewares: [new ObjectIdValidatorMiddleware('id'), new SchemaValidatorMiddleware(putOfferDtoSchema)]});
     this.addRoute({path: '/:id', httpMethod: HttpMethod.Delete, handleAsync: this.deleteById.bind(this), middlewares: [new ObjectIdValidatorMiddleware('id')]});
   }
 
