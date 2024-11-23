@@ -18,10 +18,10 @@ export class UserController extends ControllerBase {
   ) {
     super(logger);
 
-    this.addRoute({path: '/', httpMethod: HttpMethod.Post, handleAsync: this.createUserAsync});
+    this.addRoute({path: '/', httpMethod: HttpMethod.Post, handleAsync: this.create.bind(this)});
   }
 
-  private async createUserAsync(req: Request, res: Response): Promise<void> {
+  private async create(req: Request, res: Response): Promise<void> {
     const dto = plainToClass(CreateUserDto, req.body);
     const user = await this.userService.create(dto, this.config.get('SALT'));
     this.created(res, user);
