@@ -16,6 +16,7 @@ export class Application {
     @inject(Component.DatabaseClient) private readonly databaseClient: DatabaseClient,
     @inject(Component.UserController) private readonly userController: Controller,
     @inject(Component.OfferController) private readonly offerController: Controller,
+    @inject(Component.CommentController) private readonly commentController: Controller,
     @inject(Component.ExceptionFilter) private readonly exceptionFilter: ExceptionFilter
   ) {}
 
@@ -33,6 +34,7 @@ export class Application {
 
     app.use('/users', this.userController.router);
     app.use('/offers', this.offerController.router);
+    app.use('/offers', this.commentController.router);
 
     app.use(this.exceptionFilter.handle.bind(this.exceptionFilter));
 

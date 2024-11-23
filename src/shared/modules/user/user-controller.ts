@@ -8,6 +8,8 @@ import { UserService } from './user-service.interface.js';
 import { plainToClass } from 'class-transformer';
 import { CreateUserDto } from './dto/create-user.dto.js';
 import { ApplicationSchema, Config } from '../../libs/config/index.js';
+import { SchemaValidatorMiddleware } from '../../libs/rest/schema-validator.middleware.js';
+import { createUserDtoSchema } from './schemas/create-user-dto.schema.js';
 
 @injectable()
 export class UserController extends ControllerBase {
@@ -18,10 +20,10 @@ export class UserController extends ControllerBase {
   ) {
     super(logger);
 
-    this.addRoute({path: '/', httpMethod: HttpMethod.Post, handleAsync: this.createUserAsync});
+    this.addRoute({path: '/', httpMethod: HttpMethod.Post, handleAsync: this.create.bind(this), middlewares: [new SchemaValidatorMiddleware(createUserDtoSchema)]});
   }
 
-  private async createUserAsync(req: Request, res: Response): Promise<void> {
+  private async create(req: Request, res: Response): Promise<void> {
     const dto = plainToClass(CreateUserDto, req.body);
     const user = await this.userService.create(dto, this.config.get('SALT'));
     this.created(res, user);
