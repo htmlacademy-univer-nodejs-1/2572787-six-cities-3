@@ -1,3 +1,5 @@
-GET http://localhost:3123/api HTTP/1.1
+## Load avatar
+POST http://example.com/users/50me-1d/avatar
+Content-Type: multipart/form-data
 
-###
+avatar=@aboba.png
