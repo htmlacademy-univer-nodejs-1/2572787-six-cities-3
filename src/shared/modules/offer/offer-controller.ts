@@ -32,7 +32,7 @@ export class OfferController extends ControllerBase {
     this.addRoute({path: '/', httpMethod: HttpMethod.Get, handleAsync: this.index.bind(this)});
     this.addRoute({path: '/', httpMethod: HttpMethod.Post, handleAsync: this.create.bind(this), middlewares: [new SchemaValidatorMiddleware(createOfferDtoSchema)]});
     this.addRoute({path: '/:id', httpMethod: HttpMethod.Get, handleAsync: this.showById.bind(this), middlewares: [new ObjectIdValidatorMiddleware(this.offerService, 'id')]});
-    this.addRoute({path: '/:id', httpMethod: HttpMethod.Put, handleAsync: this.updateById.bind(this), middlewares: [new ObjectIdValidatorMiddleware(this.offerService, 'id'), new SchemaValidatorMiddleware(putOfferDtoSchema)]});
+    this.addRoute({path: '/:id', httpMethod: HttpMethod.Put, handleAsync: this.updateById.bind(this), middlewares: [new SchemaValidatorMiddleware(putOfferDtoSchema), new ObjectIdValidatorMiddleware(this.offerService, 'id')]});
     this.addRoute({path: '/:id', httpMethod: HttpMethod.Delete, handleAsync: this.deleteById.bind(this), middlewares: [new ObjectIdValidatorMiddleware(this.offerService, 'id')]});
   }
 
