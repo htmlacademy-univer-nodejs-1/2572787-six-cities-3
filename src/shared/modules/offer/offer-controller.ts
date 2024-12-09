@@ -156,7 +156,7 @@ export class OfferController extends ControllerBase {
     const offerId = new Types.ObjectId(id);
 
     const offerFromDb = await this.offerService.findById(offerId);
-    if (offerFromDb?.authorId != userId) {
+    if (offerFromDb?.authorId !== userId) {
       throw new HttpError(StatusCodes.FORBIDDEN, 'No access to delete offer');
     }
 
@@ -177,7 +177,7 @@ export class OfferController extends ControllerBase {
     const offerId = new Types.ObjectId(id);
 
     const offer = await this.offerService.findById(offerId);
-    if (offer?.authorId != userId) {
+    if (offer?.authorId !== userId) {
       throw new HttpError(StatusCodes.FORBIDDEN, 'No access to delete offer');
     }
 

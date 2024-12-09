@@ -59,7 +59,7 @@ export class DefaultUserService implements UserService {
     const currentHash = createSHA256(password, salt);
     const hashFromDb = user.getPassword();
 
-    if (currentHash != hashFromDb) {
+    if (currentHash !== hashFromDb) {
       return null;
     }
 

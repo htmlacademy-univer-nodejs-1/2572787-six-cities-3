@@ -1,8 +1,8 @@
-import { Request, Response, NextFunction } from "express";
-import { Middleware } from "./middleware.interface.js";
-import { HttpError } from "../exception-filter/http-error.js";
-import { StatusCodes } from "http-status-codes";
-import { jwtVerify } from "jose";
+import { Request, Response, NextFunction } from 'express';
+import { Middleware } from './middleware.interface.js';
+import { HttpError } from '../exception-filter/http-error.js';
+import { StatusCodes } from 'http-status-codes';
+import { jwtVerify } from 'jose';
 
 export class AuthorizeMiddleware implements Middleware {
   constructor(
@@ -18,7 +18,7 @@ export class AuthorizeMiddleware implements Middleware {
 
     try {
       const encodedSecret = new TextEncoder().encode(this.jwtSecret);
-      const [, token] = authorizationHeader?.split(' ');
+      const token = authorizationHeader?.split(' ')[1];
       const result = await jwtVerify(token, encodedSecret);
       const { userId } = result.payload;
       res.locals.userId = userId;

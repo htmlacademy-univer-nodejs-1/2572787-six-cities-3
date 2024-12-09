@@ -60,7 +60,7 @@ export class UserController extends ControllerBase {
     const { userId } = res.locals;
     const { id } = req.params;
 
-    if (userId != id) {
+    if (userId !== id) {
       throw new HttpError(StatusCodes.FORBIDDEN, 'No access to user');
     }
 
@@ -81,7 +81,7 @@ export class UserController extends ControllerBase {
       throw new HttpError(StatusCodes.UNAUTHORIZED, 'Wrong credentials');
     }
 
-    const access_token = await getToken({ userId: user.id }, this.config.get('JWT_SECRET'));
-    this.ok(res, { access_token });
+    const accessToken = await getToken({ userId: user.id }, this.config.get('JWT_SECRET'));
+    this.ok(res, { accessToken });
   }
 }
