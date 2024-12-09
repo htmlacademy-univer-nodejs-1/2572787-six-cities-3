@@ -12,7 +12,7 @@ export type ApplicationSchema = {
   DATABASE_NAME: string,
   SALT: string,
   STATIC_ROOT: string,
-  JWT_SECRET: Uint8Array
+  JWT_SECRET: string
 }
 
 export const configApplicationSchema = convict<ApplicationSchema>({
@@ -66,7 +66,7 @@ export const configApplicationSchema = convict<ApplicationSchema>({
   },
   JWT_SECRET: {
     doc: 'Secret for sign jwt',
-    format: Uint8Array,
+    format: String,
     env: 'JWT_SECRET',
     default: null
   }

@@ -13,12 +13,16 @@ import { CreateCommentDto } from './index.js';
 import { ObjectIdValidatorMiddleware } from '../../libs/rest/object-id-validator.middleware.js';
 import { SchemaValidatorMiddleware } from '../../libs/rest/schema-validator.middleware.js';
 import { createCommentDtoSchema } from './dto-schemas/create-comment-dto.schema.js';
+import { AuthorizeMiddleware } from '../../libs/rest/authorize.middlewate.js';
+import { Config } from '../../libs/config/config.interface.js';
+import { ApplicationSchema } from '../../libs/config/application.schema.js';
 
 @injectable()
 export class CommentController extends ControllerBase {
   constructor(
     @inject(Component.Logger) logger: Logger,
     @inject(Component.CommentService) private commentService: CommentService,
+    @inject(Component.Config) private readonly config: Config<ApplicationSchema>
   ) {
     super(logger);
 
@@ -36,7 +40,8 @@ export class CommentController extends ControllerBase {
       handleAsync: this.create.bind(this),
       middlewares: [
         new SchemaValidatorMiddleware(createCommentDtoSchema),
-        new ObjectIdValidatorMiddleware(this.commentService, 'id')
+        new ObjectIdValidatorMiddleware(this.commentService, 'id'),
+        new AuthorizeMiddleware(this.config.get('JWT_SECRET'))
       ]
     });
   }
