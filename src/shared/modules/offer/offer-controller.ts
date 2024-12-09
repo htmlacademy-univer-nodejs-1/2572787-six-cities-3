@@ -23,17 +23,73 @@ export class OfferController extends ControllerBase {
     @inject(Component.OfferService) private offerService: OfferService,
   ) {
     super(logger);
-    this.addRoute({path: '/premium/:city', httpMethod: HttpMethod.Delete, handleAsync: this.indexPremiumForCity.bind(this)});
 
-    this.addRoute({path: '/favourite', httpMethod: HttpMethod.Get, handleAsync: this.indexFavouriteForUser.bind(this)});
-    this.addRoute({path: '/favourite/:id', httpMethod: HttpMethod.Post, handleAsync: this.addToFavourite.bind(this), middlewares: [new ObjectIdValidatorMiddleware(this.offerService, 'id')]});
-    this.addRoute({path: '/favourite/:id', httpMethod: HttpMethod.Delete, handleAsync: this.removeFromFavourite.bind(this), middlewares: [new ObjectIdValidatorMiddleware(this.offerService, 'id')]});
+    this.addRoute({
+      path: '/premium/:city',
+      httpMethod: HttpMethod.Get,
+      handleAsync: this.indexPremiumForCity.bind(this)
+    });
 
-    this.addRoute({path: '/', httpMethod: HttpMethod.Get, handleAsync: this.index.bind(this)});
-    this.addRoute({path: '/', httpMethod: HttpMethod.Post, handleAsync: this.create.bind(this), middlewares: [new SchemaValidatorMiddleware(createOfferDtoSchema)]});
-    this.addRoute({path: '/:id', httpMethod: HttpMethod.Get, handleAsync: this.showById.bind(this), middlewares: [new ObjectIdValidatorMiddleware(this.offerService, 'id')]});
-    this.addRoute({path: '/:id', httpMethod: HttpMethod.Put, handleAsync: this.updateById.bind(this), middlewares: [new SchemaValidatorMiddleware(putOfferDtoSchema), new ObjectIdValidatorMiddleware(this.offerService, 'id')]});
-    this.addRoute({path: '/:id', httpMethod: HttpMethod.Delete, handleAsync: this.deleteById.bind(this), middlewares: [new ObjectIdValidatorMiddleware(this.offerService, 'id')]});
+    this.addRoute({
+      path: '/favourite',
+      httpMethod: HttpMethod.Get,
+      handleAsync: this.indexFavouriteForUser.bind(this)
+    });
+    this.addRoute({
+      path: '/favourite/:id',
+      httpMethod: HttpMethod.Post,
+      handleAsync: this.addToFavourite.bind(this),
+      middlewares: [
+        new ObjectIdValidatorMiddleware(this.offerService, 'id')
+      ]
+    });
+    this.addRoute({
+      path: '/favourite/:id',
+      httpMethod: HttpMethod.Delete,
+      handleAsync: this.removeFromFavourite.bind(this),
+      middlewares: [
+        new ObjectIdValidatorMiddleware(this.offerService, 'id')
+      ]
+    });
+
+    this.addRoute({
+      path: '/',
+      httpMethod: HttpMethod.Get,
+      handleAsync: this.index.bind(this)
+    });
+    this.addRoute({
+      path: '/',
+      httpMethod: HttpMethod.Post,
+      handleAsync: this.create.bind(this),
+      middlewares: [
+        new SchemaValidatorMiddleware(createOfferDtoSchema)
+      ]
+    });
+    this.addRoute({
+      path: '/:id',
+      httpMethod: HttpMethod.Get,
+      handleAsync: this.showById.bind(this),
+      middlewares: [
+        new ObjectIdValidatorMiddleware(this.offerService, 'id')
+      ]
+    });
+    this.addRoute({
+      path: '/:id',
+      httpMethod: HttpMethod.Put,
+      handleAsync: this.updateById.bind(this),
+      middlewares: [
+        new SchemaValidatorMiddleware(putOfferDtoSchema),
+        new ObjectIdValidatorMiddleware(this.offerService, 'id')
+      ]
+    });
+    this.addRoute({
+      path: '/:id',
+      httpMethod: HttpMethod.Delete,
+      handleAsync: this.deleteById.bind(this),
+      middlewares: [
+        new ObjectIdValidatorMiddleware(this.offerService, 'id')
+      ]
+    });
   }
 
   private async index(req: Request, res: Response): Promise<void> {
@@ -58,8 +114,10 @@ export class OfferController extends ControllerBase {
   }
 
   private async create(req: Request, res: Response): Promise<void> {
+    const { userId } = res.locals;
+
     const dto = plainToClass(CreateOfferDto, req.body);
-    dto.authorId = new Types.ObjectId();
+    dto.authorId = userId;
     const offer = await this.offerService.create(dto);
     this.created(res, offer);
   }

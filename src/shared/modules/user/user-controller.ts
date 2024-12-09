@@ -22,8 +22,23 @@ export class UserController extends ControllerBase {
   ) {
     super(logger);
 
-    this.addRoute({path: '/', httpMethod: HttpMethod.Post, handleAsync: this.create.bind(this), middlewares: [new SchemaValidatorMiddleware(createUserDtoSchema)]});
-    this.addRoute({path: '/:id/avatar', httpMethod: HttpMethod.Post, handleAsync: this.loadAvatar.bind(this), middlewares: [new ObjectIdValidatorMiddleware(this.userService, 'id'), new UploadFileMiddleware(this.config.get('STATIC_ROOT'), 'avatar')]})
+    this.addRoute({
+      path: '/',
+      httpMethod: HttpMethod.Post,
+      handleAsync: this.create.bind(this),
+      middlewares: [
+        new SchemaValidatorMiddleware(createUserDtoSchema)
+      ]
+    });
+    this.addRoute({
+      path: '/:id/avatar',
+      httpMethod: HttpMethod.Post,
+      handleAsync: this.loadAvatar.bind(this),
+      middlewares: [
+        new ObjectIdValidatorMiddleware(this.userService, 'id'),
+        new UploadFileMiddleware(this.config.get('STATIC_ROOT'), 'avatar')
+      ]
+    });
   }
 
   private async create(req: Request, res: Response): Promise<void> {

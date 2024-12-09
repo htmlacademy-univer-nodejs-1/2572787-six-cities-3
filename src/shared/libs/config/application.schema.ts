@@ -12,6 +12,7 @@ export type ApplicationSchema = {
   DATABASE_NAME: string,
   SALT: string,
   STATIC_ROOT: string,
+  JWT_SECRET: Uint8Array
 }
 
 export const configApplicationSchema = convict<ApplicationSchema>({
@@ -61,6 +62,12 @@ export const configApplicationSchema = convict<ApplicationSchema>({
     doc: 'Root path for static files',
     format: String,
     env: 'STATIC_ROOT',
+    default: null
+  },
+  JWT_SECRET: {
+    doc: 'Secret for sign jwt',
+    format: Uint8Array,
+    env: 'JWT_SECRET',
     default: null
   }
 });
