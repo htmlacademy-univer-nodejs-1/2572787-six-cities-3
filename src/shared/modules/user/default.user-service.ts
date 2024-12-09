@@ -7,6 +7,7 @@ import { inject, injectable } from 'inversify';
 import { Component } from '../../models/component.enum.js';
 import { Logger } from '../../libs/logger/index.js';
 import { ObjectId, Types } from 'mongoose';
+import { createSHA256 } from '../../helpers/hash.js';
 
 @injectable()
 export class DefaultUserService implements UserService {
@@ -46,5 +47,26 @@ export class DefaultUserService implements UserService {
     }
 
     return this.create(dto, salt);
+  }
+
+  public async checkPassword(email: string, password: string, salt: string): Promise<DocumentType<UserEntity> | null> {
+    const user = await this.findByEmail(email);
+
+    if (!user) {
+      return null;
+    }
+
+    const currentHash = createSHA256(password, salt);
+    const hashFromDb = user.getPassword();
+
+    if (currentHash !== hashFromDb) {
+      return null;
+    }
+
+    return user;
+  }
+
+  public async updateAvatar(id: ObjectId, avatarPath: string): Promise<void> {
+    await this.userModel.updateOne({ id: id }, { avatarUrl: avatarPath });
   }
 }

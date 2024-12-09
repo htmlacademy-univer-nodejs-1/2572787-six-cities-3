@@ -14,7 +14,7 @@ export const createOfferDtoSchema = Joi.object({
   guestsNumber: Joi.number().min(1).max(10).required(),
   cost: Joi.number().min(100).max(100000).required(),
   conveniences: Joi.array().items(Joi.string().valid(...Object.values(ConvenienceType))).required(),
-  authorId: Joi.string().required().custom((value, helpers) => {
+  authorId: Joi.string().custom((value, helpers) => {
     const filtered = Types.ObjectId.isValid(value);
     return !filtered ? helpers.error('any.invalid') : value;
   }, 'invalid objectId'),

@@ -9,4 +9,6 @@ export interface UserService extends CheckIdService {
   findById(id: ObjectId): Promise<DocumentType<UserEntity> | null>;
   findByEmail(email: string): Promise<DocumentType<UserEntity> | null>;
   findOrCreate(dto: CreateUserDto, salt: string): Promise<DocumentType<UserEntity>>;
+  checkPassword(email: string, password: string, salt: string): Promise<DocumentType<UserEntity> | null>;
+  updateAvatar(id: ObjectId, avatarPath: string): Promise<void>;
 }
