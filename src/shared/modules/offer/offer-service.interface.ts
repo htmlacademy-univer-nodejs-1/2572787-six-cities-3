@@ -4,8 +4,9 @@ import { CreateOfferDto } from './dto/create-offer.dto.js';
 import { PutOfferDto } from './dto/put-offer.dto.js';
 import { City } from '../../models/index.js';
 import { Types } from 'mongoose';
+import { CheckIdService } from '../../libs/rest/check-id-service.interface.js';
 
-export interface OfferService {
+export interface OfferService extends CheckIdService {
   create(dto: CreateOfferDto): Promise<DocumentType<OfferEntity>>;
   change(dto: PutOfferDto): Promise<DocumentType<OfferEntity> | null>;
   deleteById(id: Types.ObjectId): Promise<void>;
