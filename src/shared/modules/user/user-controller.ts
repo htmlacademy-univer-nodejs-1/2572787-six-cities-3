@@ -64,11 +64,23 @@ export class UserController extends ControllerBase {
       throw new HttpError(StatusCodes.FORBIDDEN, 'No access to user');
     }
 
-    this.created(res, { filepath: req.file?.path });
+    const filepath = req.file?.path;
+    if (!filepath) {
+      throw new HttpError(StatusCodes.INTERNAL_SERVER_ERROR, 'Avatar not loaded');
+    }
+
+    await this.userService.updateAvatar(userId, filepath);
+    this.created(res, { filepath });
   }
 
   private async register(req: Request, res: Response): Promise<void> {
     const dto = plainToClass(CreateUserDto, req.body);
+
+    const avatarPath = req.file?.path;
+    if (avatarPath) {
+      dto.avatarUrl = avatarPath;
+    }
+
     const user = await this.userService.create(dto, this.config.get('SALT'));
     this.created(res, user);
   }

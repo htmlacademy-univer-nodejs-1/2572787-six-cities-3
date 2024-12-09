@@ -65,4 +65,8 @@ export class DefaultUserService implements UserService {
 
     return user;
   }
+
+  public async updateAvatar(id: ObjectId, avatarPath: string): Promise<void> {
+    await this.userModel.updateOne({ id: id }, { avatarUrl: avatarPath });
+  }
 }
