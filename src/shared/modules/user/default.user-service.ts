@@ -6,7 +6,7 @@ import { UserEntity } from './user.entity.js';
 import { inject, injectable } from 'inversify';
 import { Component } from '../../models/component.enum.js';
 import { Logger } from '../../libs/logger/index.js';
-import { ObjectId } from 'mongoose';
+import { ObjectId, Types } from 'mongoose';
 
 @injectable()
 export class DefaultUserService implements UserService {
@@ -14,6 +14,11 @@ export class DefaultUserService implements UserService {
     @inject(Component.Logger) private readonly logger: Logger,
     @inject(Component.UserModel) private readonly userModel: types.ModelType<UserEntity>
   ) {}
+
+  public async checkIdExists(id: Types.ObjectId): Promise<boolean> {
+    const result = await this.userModel.findById(id);
+    return Boolean(result);
+  }
 
   public async create(dto: CreateUserDto, salt: string): Promise<DocumentType<UserEntity>> {
     const user = new UserEntity(dto);
