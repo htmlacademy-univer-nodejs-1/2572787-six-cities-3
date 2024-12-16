@@ -9,17 +9,19 @@ export class SchemaValidatorMiddleware implements Middleware {
   constructor(private schema: ObjectSchema) {}
 
   public async handleAsync(req: Request, _res: Response, next: NextFunction): Promise<void> {
-    try {
-      req.body = await this.schema.validateAsync(req.body, {
+      const result = await this.schema.validateAsync(req.body, {
         context: { isEditForm: req.method === 'POST' }
       });
 
+      if (result.error != null) {
+        throw new HttpError(
+          StatusCodes.BAD_REQUEST,
+          'Body does not match the scheme',
+          result.error
+        );
+      }
+
+      req.body = result
       return next();
-    } catch (error: unknown) {
-      throw new HttpError(
-        StatusCodes.BAD_REQUEST,
-        'Body does not match the scheme'
-      );
-    }
   }
 }

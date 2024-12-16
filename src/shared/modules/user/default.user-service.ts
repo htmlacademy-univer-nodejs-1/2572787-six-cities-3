@@ -25,18 +25,18 @@ export class DefaultUserService implements UserService {
     const user = new UserEntity(dto);
     user.setPassword(dto.password, salt);
 
-    const result = this.userModel.create(user);
+    const result = await this.userModel.create(user);
     this.logger.info(`New user created: ${user.email}`);
 
     return result;
   }
 
   public async findById(id: ObjectId): Promise<DocumentType<UserEntity> | null> {
-    return this.userModel.findById(id);
+    return await this.userModel.findById(id);
   }
 
   public async findByEmail(email: string): Promise<DocumentType<UserEntity> | null> {
-    return this.userModel.findOne({ email });
+    return await this.userModel.findOne({ email });
   }
 
   public async findOrCreate(dto: CreateUserDto, salt: string): Promise<DocumentType<UserEntity>> {
@@ -46,7 +46,7 @@ export class DefaultUserService implements UserService {
       return existedUser;
     }
 
-    return this.create(dto, salt);
+    return await this.create(dto, salt);
   }
 
   public async checkPassword(email: string, password: string, salt: string): Promise<DocumentType<UserEntity> | null> {
@@ -67,6 +67,6 @@ export class DefaultUserService implements UserService {
   }
 
   public async updateAvatar(id: ObjectId, avatarPath: string): Promise<void> {
-    await this.userModel.updateOne({ id: id }, { avatarUrl: avatarPath });
+    await this.userModel.updateOne({ id: id }, { avatarUrl: avatarPath }).exec();
   }
 }

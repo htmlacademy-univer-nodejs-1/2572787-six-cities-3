@@ -10,7 +10,6 @@ import { CreateUserDto } from './dto/create-user.dto.js';
 import { ApplicationSchema, Config } from '../../libs/config/index.js';
 import { SchemaValidatorMiddleware } from '../../libs/rest/schema-validator.middleware.js';
 import { createUserDtoSchema } from './schemas/create-user-dto.schema.js';
-import { ObjectIdValidatorMiddleware } from '../../libs/rest/object-id-validator.middleware.js';
 import { UploadFileMiddleware } from '../../libs/rest/upload-file.middleware.js';
 import { AuthorizeMiddleware } from '../../libs/rest/authorize.middlewate.js';
 import { HttpError } from '../../libs/exception-filter/http-error.js';
@@ -18,6 +17,7 @@ import { StatusCodes } from 'http-status-codes';
 import { LoginDto } from './dto/login.dto.js';
 import { getToken } from '../../helpers/jwt-tokens.js';
 import { loginDtoSchema } from './schemas/login-dto.schema.js';
+import { toFullModel } from './conventers.js';
 
 @injectable()
 export class UserController extends ControllerBase {
@@ -45,11 +45,18 @@ export class UserController extends ControllerBase {
       ]
     });
     this.addRoute({
-      path: '/:id/avatar',
+      path: '/me',
+      httpMethod: HttpMethod.Get,
+      handleAsync: this.me.bind(this),
+      middlewares: [
+        new AuthorizeMiddleware(this.config.get('JWT_SECRET'))
+      ]
+    });
+    this.addRoute({
+      path: '/me/avatar',
       httpMethod: HttpMethod.Post,
       handleAsync: this.loadAvatar.bind(this),
       middlewares: [
-        new ObjectIdValidatorMiddleware(this.userService, 'id'),
         new AuthorizeMiddleware(this.config.get('JWT_SECRET')),
         new UploadFileMiddleware(this.config.get('STATIC_ROOT'), 'avatar')
       ]
@@ -58,11 +65,6 @@ export class UserController extends ControllerBase {
 
   private async loadAvatar(req: Request, res: Response): Promise<void> {
     const { userId } = res.locals;
-    const { id } = req.params;
-
-    if (userId !== id) {
-      throw new HttpError(StatusCodes.FORBIDDEN, 'No access to user');
-    }
 
     const filepath = req.file?.path;
     if (!filepath) {
@@ -78,11 +80,11 @@ export class UserController extends ControllerBase {
 
     const avatarPath = req.file?.path;
     if (avatarPath) {
-      dto.avatarUrl = avatarPath;
+      dto.avatar = avatarPath;
     }
 
     const user = await this.userService.create(dto, this.config.get('SALT'));
-    this.created(res, user);
+    this.created(res, toFullModel(user));
   }
 
   private async login(req: Request, res: Response): Promise<void> {
@@ -95,5 +97,18 @@ export class UserController extends ControllerBase {
 
     const accessToken = await getToken({ userId: user.id }, this.config.get('JWT_SECRET'));
     this.ok(res, { accessToken });
+  }
+
+  private async me(_req: Request, res: Response): Promise<void> {
+    const { userId } = res.locals;
+
+    const user = await this.userService.findById(userId);
+
+    if (user == null) {
+      this.send(res, StatusCodes.UNAUTHORIZED, null);
+      return;
+    }
+
+    this.ok(res, toFullModel(user));
   }
 }

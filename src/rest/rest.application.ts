@@ -7,6 +7,7 @@ import { getMongoUri } from '../shared/helpers/index.js';
 import express from 'express';
 import { Controller } from '../shared/libs/rest/controller.interface.js';
 import { ExceptionFilter } from '../shared/libs/exception-filter/exception-filter.interface.js';
+import cors from 'cors';
 
 @injectable()
 export class Application {
@@ -58,6 +59,7 @@ export class Application {
   private async configureMiddlewares(app: express.Application) {
     app.use(express.json());
     app.use(express.static(this.config.get('STATIC_ROOT')));
+    app.use(cors())
     app.use((req, _res, next) => {
       this.logger.info(`Catch request: ${req.method} ${req.url}`);
       next();

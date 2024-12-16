@@ -1,8 +1,6 @@
-import { Types } from 'mongoose';
 import { HousingType, ConvenienceType, City } from '../../../models/index.js';
 
 export class PutOfferDto {
-  public id: Types.ObjectId;
   public name: string;
   public description: string;
   public city: City;
