@@ -8,7 +8,7 @@ export const createCommentDtoSchema = Joi.object({
     const filtered = Types.ObjectId.isValid(value);
     return !filtered ? helpers.error('any.invalid') : value;
   }, 'invalid objectId'),
-  offerId: Joi.string().required().custom((value, helpers) => {
+  offerId: Joi.string().custom((value, helpers) => {
     const filtered = Types.ObjectId.isValid(value);
     return !filtered ? helpers.error('any.invalid') : value;
   }, 'invalid objectId')

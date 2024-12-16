@@ -1,8 +1,9 @@
 import { Generator } from './generator.interface.js';
-import { City, ConvenienceType, HousingType, MockServerData, UserType } from '../../models/index.js';
+import { City, ConvenienceType, HousingType, MockServerData } from '../../models/index.js';
 import { generateRandomValue, getRandomItem, generateRandomBoolean, getRandomEnumValue, getRandomEnumValues } from '../../helpers/index.js';
 import dayjs from 'dayjs';
 import { OfferTsvParser } from './offer-tsv-parser.js';
+import { Types } from 'mongoose';
 
 const MIN_DAY_OFFSET = 0;
 const MAX_DAY_OFFSET = 14;
@@ -22,9 +23,6 @@ const MAX_GUESTS = 10;
 const MIN_COST = 1_000;
 const MAX_COST = 500_000;
 
-const MIN_EMAIL_ID = 0;
-const MAX_EMAIL_ID = 500_000;
-
 const MIN_LATITUDE = 0;
 const MAX_LATITUDE = 90;
 
@@ -39,9 +37,10 @@ export class OfferTsvGenerator implements Generator {
     const author = getRandomItem(this.mockData.authors);
 
     const offer = {
+      id: String(Types.ObjectId.generate()),
       name: getRandomItem(this.mockData.names),
       description: getRandomItem(this.mockData.descriptions),
-      internalCreatedAt: dayjs()
+      createdAt: dayjs()
         .subtract(generateRandomValue(MIN_DAY_OFFSET, MAX_DAY_OFFSET))
         .toDate(),
       city: getRandomEnumValue(City),
@@ -62,12 +61,7 @@ export class OfferTsvGenerator implements Generator {
       guestsNumber: generateRandomValue(MIN_GUESTS, MAX_GUESTS),
       cost: generateRandomValue(MIN_COST, MAX_COST, 2),
       conveniences: getRandomEnumValues(ConvenienceType),
-      author: {
-        email: `${author}${generateRandomValue(MIN_EMAIL_ID, MAX_EMAIL_ID)}@aboba.ru`,
-        name: author,
-        type: UserType.Basic,
-        avatarUrl: `http://localhost:1111/${author}`
-      },
+      author: author,
       latitude: generateRandomValue(MIN_LATITUDE, MAX_LATITUDE, 6),
       longitude: generateRandomValue(MIN_LONGITUDE, MAX_LONGITUDE, 6),
       commentsNumber: 0

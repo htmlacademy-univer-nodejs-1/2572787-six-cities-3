@@ -4,26 +4,22 @@ import { getErrorMessage } from '../../shared/helpers/common.js';
 import { TsvFileReader } from '../../shared/libs/file-reader/index.js';
 import { Logger, ConsoleLogger } from '../../shared/libs/logger/index.js';
 import { OfferModel, OfferService, DefaultOfferService } from '../../shared/modules/offer/index.js';
-import { UserModel, UserService, DefaultUserService } from '../../shared/modules/user/index.js';
 import { DatabaseClient, MongoDatabaseClient } from '../../shared/libs/database-client/index.js';
 import { Offer } from '../../shared/models/index.js';
-import { DEFAULT_USER_PASSWORD } from './command.constants.js';
+import { CommentModel } from '../../shared/modules/comment/comment.entity.js';
 
 export class ImportCommand implements Command {
   private readonly parser: OfferTsvParser = new OfferTsvParser();
-  private readonly userService: UserService;
   private readonly offerService: OfferService;
   private readonly databaseClient: DatabaseClient;
   private readonly logger: Logger;
-  private salt: string;
 
   constructor() {
     this.onImportedLine = this.onImportedLine.bind(this);
     this.onCompleteImport = this.onCompleteImport.bind(this);
 
     this.logger = new ConsoleLogger();
-    this.offerService = new DefaultOfferService(this.logger, OfferModel);
-    this.userService = new DefaultUserService(this.logger, UserModel);
+    this.offerService = new DefaultOfferService(this.logger, OfferModel, CommentModel);
     this.databaseClient = new MongoDatabaseClient(this.logger);
   }
 
@@ -31,9 +27,7 @@ export class ImportCommand implements Command {
     return '--import';
   }
 
-  public async execute(filename: string, databaseConnectionUri: string, salt: string): Promise<void> {
-    this.salt = salt;
-
+  public async execute(filename: string, databaseConnectionUri: string): Promise<void> {
     await this.databaseClient.connect(databaseConnectionUri);
     const reader = new TsvFileReader(filename.trim());
 
@@ -60,11 +54,6 @@ export class ImportCommand implements Command {
   }
 
   private async saveOffer(offer: Offer) {
-    const user = await this.userService.findOrCreate({
-      ...offer.author,
-      password: DEFAULT_USER_PASSWORD
-    }, this.salt);
-
     await this.offerService.create({
       name: offer.name,
       description: offer.description,
@@ -77,7 +66,7 @@ export class ImportCommand implements Command {
       guestsNumber: offer.guestsNumber,
       cost: offer.cost,
       conveniences: offer.conveniences,
-      authorId: user.id,
+      authorId: offer.author,
       latitude: offer.latitude,
       longitude: offer.longitude
     });
