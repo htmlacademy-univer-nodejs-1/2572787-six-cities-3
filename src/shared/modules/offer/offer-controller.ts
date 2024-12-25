@@ -159,7 +159,7 @@ export class OfferController extends ControllerBase {
 
     const offer = await this.offerService.findById(new Types.ObjectId(id));
 
-    if (offer == null) {
+    if (offer === null) {
       this.send(res, StatusCodes.NOT_FOUND, null);
       return;
     }
@@ -183,7 +183,7 @@ export class OfferController extends ControllerBase {
     const dto = plainToClass(PutOfferDto, req.body);
     const offer = await this.offerService.change(new Types.ObjectId(id), dto);
 
-    if (offer == null) {
+    if (offer === null) {
       this.send(res, StatusCodes.NOT_FOUND, null);
       return;
     }
