@@ -49,7 +49,7 @@ export class UserController extends ControllerBase {
       httpMethod: HttpMethod.Get,
       handleAsync: this.me.bind(this),
       middlewares: [
-        new AuthorizeMiddleware(this.config.get('JWT_SECRET'))
+        new AuthorizeMiddleware(this.config.get('JWT_SECRET'), false)
       ]
     });
     this.addRoute({
@@ -57,7 +57,7 @@ export class UserController extends ControllerBase {
       httpMethod: HttpMethod.Post,
       handleAsync: this.loadAvatar.bind(this),
       middlewares: [
-        new AuthorizeMiddleware(this.config.get('JWT_SECRET')),
+        new AuthorizeMiddleware(this.config.get('JWT_SECRET'), false),
         new UploadFileMiddleware(this.config.get('STATIC_ROOT'), 'avatar')
       ]
     });
@@ -67,6 +67,7 @@ export class UserController extends ControllerBase {
     const { userId } = res.locals;
 
     const filepath = req.file?.path;
+    this.logger.info(`Avatar loaded path: ${filepath}`)
     if (!filepath) {
       throw new HttpError(StatusCodes.INTERNAL_SERVER_ERROR, 'Avatar not loaded');
     }
@@ -84,7 +85,7 @@ export class UserController extends ControllerBase {
     }
 
     const user = await this.userService.create(dto, this.config.get('SALT'));
-    this.created(res, toFullModel(user));
+    this.created(res, toFullModel(user, this.config.get('HOST')));
   }
 
   private async login(req: Request, res: Response): Promise<void> {
@@ -109,6 +110,6 @@ export class UserController extends ControllerBase {
       return;
     }
 
-    this.ok(res, toFullModel(user));
+    this.ok(res, toFullModel(user, this.config.get('HOST')));
   }
 }

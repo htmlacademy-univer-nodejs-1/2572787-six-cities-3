@@ -7,19 +7,26 @@ import { OfferModel, OfferService, DefaultOfferService } from '../../shared/modu
 import { DatabaseClient, MongoDatabaseClient } from '../../shared/libs/database-client/index.js';
 import { Offer } from '../../shared/models/index.js';
 import { CommentModel } from '../../shared/modules/comment/comment.entity.js';
+import { UserService } from '../../shared/modules/user/user-service.interface.js';
+import { DefaultUserService } from '../../shared/modules/user/default.user-service.js';
+import { UserModel } from '../../shared/modules/user/user.entity.js';
 
 export class ImportCommand implements Command {
   private readonly parser: OfferTsvParser = new OfferTsvParser();
   private readonly offerService: OfferService;
+  private readonly userService: UserService;
   private readonly databaseClient: DatabaseClient;
   private readonly logger: Logger;
+  private salt: string;
 
   constructor() {
     this.onImportedLine = this.onImportedLine.bind(this);
     this.onCompleteImport = this.onCompleteImport.bind(this);
+    this.saveOffer = this.saveOffer.bind(this);
 
     this.logger = new ConsoleLogger();
     this.offerService = new DefaultOfferService(this.logger, OfferModel, CommentModel);
+    this.userService = new DefaultUserService(this.logger, UserModel);
     this.databaseClient = new MongoDatabaseClient(this.logger);
   }
 
@@ -27,7 +34,9 @@ export class ImportCommand implements Command {
     return '--import';
   }
 
-  public async execute(filename: string, databaseConnectionUri: string): Promise<void> {
+  public async execute(filename: string, databaseConnectionUri: string, salt: string): Promise<void> {
+    this.salt = salt;
+
     await this.databaseClient.connect(databaseConnectionUri);
     const reader = new TsvFileReader(filename.trim());
 
@@ -54,6 +63,13 @@ export class ImportCommand implements Command {
   }
 
   private async saveOffer(offer: Offer) {
+    const result = await this.userService.create({
+      email: offer.author.email,
+      password: '1234567890',
+      type: offer.author.type,
+      name: offer.author.name
+    }, this.salt);
+
     await this.offerService.create({
       name: offer.name,
       description: offer.description,
@@ -66,9 +82,8 @@ export class ImportCommand implements Command {
       guestsNumber: offer.guestsNumber,
       cost: offer.cost,
       conveniences: offer.conveniences,
-      authorId: offer.author,
       latitude: offer.latitude,
       longitude: offer.longitude
-    });
+    }, result.id);
   }
 }
