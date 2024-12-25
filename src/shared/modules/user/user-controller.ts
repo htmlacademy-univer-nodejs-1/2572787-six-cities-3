@@ -67,7 +67,7 @@ export class UserController extends ControllerBase {
     const { userId } = res.locals;
 
     const filepath = req.file?.path;
-    this.logger.info(`Avatar loaded path: ${filepath}`)
+    this.logger.info(`Avatar loaded path: ${filepath}`);
     if (!filepath) {
       throw new HttpError(StatusCodes.INTERNAL_SERVER_ERROR, 'Avatar not loaded');
     }
@@ -105,7 +105,7 @@ export class UserController extends ControllerBase {
 
     const user = await this.userService.findById(userId);
 
-    if (user == null) {
+    if (user === null) {
       this.send(res, StatusCodes.UNAUTHORIZED, null);
       return;
     }
