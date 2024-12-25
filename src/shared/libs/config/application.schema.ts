@@ -4,6 +4,7 @@ import validator from 'convict-format-with-validator';
 convict.addFormats(validator);
 
 export type ApplicationSchema = {
+  HOST: string,
   PORT: number,
   DATABASE_HOST: string,
   DATABASE_PORT: string,
@@ -16,6 +17,12 @@ export type ApplicationSchema = {
 }
 
 export const configApplicationSchema = convict<ApplicationSchema>({
+  HOST: {
+    doc: 'Host for incoming connections',
+    format: 'url',
+    env: 'HOST',
+    default: 'http://localhost:4000'
+  },
   PORT: {
     doc: 'Port for incoming connections',
     format: 'port',

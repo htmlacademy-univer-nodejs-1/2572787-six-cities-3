@@ -12,6 +12,8 @@ services:
       - 8000:8000
     depends_on:
       - db
+    volumes:
+      - six-cities_data:/data/api
   db:
     image: mongo:4.2
     restart: always

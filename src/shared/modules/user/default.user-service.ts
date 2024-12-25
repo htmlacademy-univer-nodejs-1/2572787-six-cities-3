@@ -6,8 +6,8 @@ import { UserEntity } from './user.entity.js';
 import { inject, injectable } from 'inversify';
 import { Component } from '../../models/component.enum.js';
 import { Logger } from '../../libs/logger/index.js';
-import { ObjectId, Types } from 'mongoose';
 import { createSHA256 } from '../../helpers/hash.js';
+import { Types } from 'mongoose';
 
 @injectable()
 export class DefaultUserService implements UserService {
@@ -31,7 +31,7 @@ export class DefaultUserService implements UserService {
     return result;
   }
 
-  public async findById(id: ObjectId): Promise<DocumentType<UserEntity> | null> {
+  public async findById(id: Types.ObjectId): Promise<DocumentType<UserEntity> | null> {
     return await this.userModel.findById(id);
   }
 
@@ -66,7 +66,7 @@ export class DefaultUserService implements UserService {
     return user;
   }
 
-  public async updateAvatar(id: ObjectId, avatarPath: string): Promise<void> {
-    await this.userModel.updateOne({ id: id }, { avatarUrl: avatarPath }).exec();
+  public async updateAvatar(id: Types.ObjectId, avatarPath: string): Promise<void> {
+    await this.userModel.findByIdAndUpdate(id, { avatar: avatarPath }).exec();
   }
 }

@@ -1,5 +1,5 @@
 import { Generator } from './generator.interface.js';
-import { City, ConvenienceType, HousingType, MockServerData } from '../../models/index.js';
+import { City, ConvenienceType, HousingType, MockServerData, UserType } from '../../models/index.js';
 import { generateRandomValue, getRandomItem, generateRandomBoolean, getRandomEnumValue, getRandomEnumValues } from '../../helpers/index.js';
 import dayjs from 'dayjs';
 import { OfferTsvParser } from './offer-tsv-parser.js';
@@ -61,7 +61,13 @@ export class OfferTsvGenerator implements Generator {
       guestsNumber: generateRandomValue(MIN_GUESTS, MAX_GUESTS),
       cost: generateRandomValue(MIN_COST, MAX_COST, 2),
       conveniences: getRandomEnumValues(ConvenienceType),
-      author: author,
+      author: {
+        id: `${generateRandomValue(0, 100000)}`,
+        name: author,
+        email: `${author}${generateRandomValue(0, 100000)}@fakemail.ru`,
+        type: getRandomEnumValue(UserType),
+        avatar: `https://six-cities.ru/images/${generateRandomValue(0, 100000)}/user`
+      },
       latitude: generateRandomValue(MIN_LATITUDE, MAX_LATITUDE, 6),
       longitude: generateRandomValue(MIN_LONGITUDE, MAX_LONGITUDE, 6),
       commentsNumber: 0

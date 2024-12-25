@@ -40,7 +40,7 @@ export class Application {
     app.use(this.exceptionFilter.handle.bind(this.exceptionFilter));
 
     app.listen(this.config.get('PORT'),
-      () => this.logger.info(`Server running on port: ${this.config.get('PORT')}`)
+      () => this.logger.info(`Server running on: ${this.config.get('HOST')}`)
     );
   }
 
@@ -58,7 +58,7 @@ export class Application {
 
   private async configureMiddlewares(app: express.Application) {
     app.use(express.json());
-    app.use(express.static(this.config.get('STATIC_ROOT')));
+    app.use('/static', express.static(this.config.get('STATIC_ROOT')));
     app.use(cors())
     app.use((req, _res, next) => {
       this.logger.info(`Catch request: ${req.method} ${req.url}`);
